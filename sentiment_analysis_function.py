@@ -1,4 +1,3 @@
-# git clone test
 import spacy
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -12,7 +11,7 @@ def sentiment_analysis(file_path, delimiter):
     Function to take file path and perform 
     sentiment analysis of reviews in file
     '''
-    # Check if the file exists using a while loop
+     # Check if the file exists using a while loop
     while True:
         if not os.path.exists(file_path):
             print("Error: File does not exist.")
@@ -60,31 +59,49 @@ def sentiment_analysis(file_path, delimiter):
         subjectivity_list.append(subjectivity)
 
     # store review tokens and scores in pandas df
-    data = pd.DataFrame( {'Review tokens' : token_list, 'Polarity': polarity_list, 
+    review_df = pd.DataFrame( {'Review tokens' : token_list, 'Polarity': polarity_list, 
                           'Subjectivity': subjectivity_list, })
+    
 
-    # print histogram of polarity
-    plt.hist(data["Polarity"], bins = 100)
+    return review_df, df
+
+def plot_histogram_polarity(review_df):
+    '''
+    print histogram of polarity
+    '''
+    plt.hist(review_df["Polarity"], bins = 100)
     plt.xlabel('Polarity')
     plt.ylabel('Frequency')
     plt.title('Polarity of reviews')
     plt.show()
+   
 
-    # print histrogram of subjectivity
-    plt.hist(data["Subjectivity"], bins = 100)
+def plot_histogram_subjectivity(review_df):
+    '''
+    print histrogram of subjectivity
+    '''
+    
+    plt.hist(review_df["Subjectivity"], bins = 100)
     plt.xlabel('Subjectivity')
     plt.ylabel('Frequency')
     plt.title('Subjectivity of reviews')
     plt.show()
+    
 
-    # print histogram of star ratings
+def plot_star_rating(df):
+    '''
+    print histogram of star ratings
+    '''
     plt.hist(df["reviews.rating"], bins = 5)
     plt.xlabel('Rating')
     plt.ylabel('Frequency')
     plt.title('Star rating of reviews')
     plt.show()
 
-    return
+    
 
 
-sentiment_analysis('amazon_product_reviews.csv', ',')
+review_df, df = sentiment_analysis('amazon_product_reviews.csv', ',')
+plot_histogram_polarity(review_df)
+plot_histogram_subjectivity(review_df)
+plot_star_rating(df)
