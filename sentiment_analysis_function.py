@@ -4,6 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from spacytextblob.spacytextblob import SpacyTextBlob
 from spacy.tokens import Doc
+import os
 
 # function to take review file and produce pandas df with analysis of trends
 def sentiment_analysis(file_path, delimiter):
@@ -11,7 +12,13 @@ def sentiment_analysis(file_path, delimiter):
     Function to take file path and perform 
     sentiment analysis of reviews in file
     '''
-    # import relevant libraries
+    # Check if the file exists using a while loop
+    while True:
+        if not os.path.exists(file_path):
+            print("Error: File does not exist.")
+            file_path = input("Please enter a valid file path: ")
+        else:
+            break
      
     # load spacy english model and textblob component
     nlp = spacy.load('en_core_web_md')
@@ -27,7 +34,7 @@ def sentiment_analysis(file_path, delimiter):
     # turn reviews into spacy doc objects
     doc_list = []
     # only processing first 1000 values to reduce processing time, my laptop is sloooow
-    for index, sentence in enumerate(review_df[0:1000]): 
+    for index, sentence in enumerate(review_df[0:100]): 
         sentence = sentence.strip()
         sentence = sentence.lower()
         doc = nlp(sentence)
